@@ -15,7 +15,7 @@ public class RMIStore {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        System.out.println("It's me JAVA and I work fine dude!!");
     }
     
 }
