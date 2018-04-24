@@ -6,6 +6,7 @@
 package app_infrastructure;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  *
@@ -14,23 +15,29 @@ import java.util.ArrayList;
 public class Bill {
     private static int count;
     private final int id;
-    private ArrayList<Model> models_inBill;
+    private final int userID;
+    private final Cart cart;
     private float billValue;
+    Map<Integer, Integer> models_inBill;
     
-    public Bill(ArrayList<Model> models_inBill) {
+    public Bill(int userID, Cart c) {
         count++;
         id = count;
-        this.models_inBill = models_inBill;
-        for(Model m : models_inBill) {
-            billValue+=m.getPrice();
-        }
+        this.userID = userID;
+        this.cart = c;
+        models_inBill = c.getModels_inCart();
+        billValue = c.getCartValue();
     }
 
     public int getId() {
         return id;
     }
 
-    public ArrayList<Model> getModels_inBill() {
+    public int getUserID() {
+        return userID;
+    }
+    
+    public Map<Integer, Integer> getModels_inBill() {
         return models_inBill;
     }
 

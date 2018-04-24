@@ -6,42 +6,62 @@
 package app_infrastructure;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author Yazan
  */
 public class Cart {
-    private static int count;
-    private final int id;
-    private ArrayList<Model> models_inCart;
+
+    private int id;
+    private Map<Integer, Integer> models_inCart;
     private float cartValue;
 
-    public Cart() {
-        count++;
-        id = count;
-        models_inCart = new ArrayList<>();
+    public Cart(int id) {
+        this.id = id;
+        models_inCart = new HashMap<>();
     }
-    
+
     public int getId() {
         return id;
     }
 
-    public ArrayList<Model> getModels_inCart() {
+    public Map<Integer, Integer> getModels_inCart() {
         return models_inCart;
     }
 
     public float getCartValue() {
         return cartValue;
     }
-    
-    public void addtoCart(Model m) {
-        models_inCart.add(m);
-        cartValue+=m.getPrice();
+
+    public boolean addtoCart(Model m, int quantity) {
+        if (m.getQuantity() >= quantity) {
+            if (models_inCart.containsKey(m.getId())) {
+                models_inCart.put(m.getId(), models_inCart.get(m.getId()) + quantity);
+                cartValue += m.getPrice() * quantity;
+                m.setQuantity(m.getQuantity()-quantity);
+            } else {
+                models_inCart.put(m.getId(), quantity);
+                cartValue += m.getPrice() * quantity;
+                m.setQuantity(m.getQuantity()-quantity);
+            }
+            return true;
+        } else return false;
     }
-    
-    public void removefromCart(Model m) {
-        models_inCart.remove(m);
-        cartValue-=m.getPrice();
+
+    public boolean removefromCart(Model m, int quantity) {
+
+        if (models_inCart.get(m.getId()) > quantity) {
+            models_inCart.put(m.getId(), models_inCart.get(m.getId()) - quantity);
+            m.setQuantity(m.getQuantity()+quantity);
+            return true;
+        } else if(models_inCart.get(m.getId()) == quantity) {
+            models_inCart.remove(m.getId());
+            m.setQuantity(m.getQuantity()+quantity);
+            return true;
+        } else return false;
     }
 }
