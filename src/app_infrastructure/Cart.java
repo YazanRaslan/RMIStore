@@ -5,9 +5,7 @@
  */
 package app_infrastructure;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,8 +14,8 @@ import java.util.Map;
  */
 public class Cart {
 
-    private int id;
-    private Map<Integer, Integer> models_inCart;
+    private final int id;
+    private final Map<Integer, Integer> models_inCart;
     private float cartValue;
 
     public Cart(int id) {

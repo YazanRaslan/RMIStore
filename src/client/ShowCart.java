@@ -169,7 +169,7 @@ public class ShowCart extends javax.swing.JFrame {
                 } else {
                     ArrayList<Integer> modelIDsNcart = server.getModelIDsNcart(cartcount);
                     if (modelIDsNcart.contains(modelID)) {
-                        boolean removed = false;
+                        boolean removed;
                         removed = server.removeFromCart(cartcount, modelID, quantity);
                         if (!removed) {
                             errorlbl.setText("*sorry, you don't have that much");
@@ -235,6 +235,7 @@ public class ShowCart extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
                     new ShowCart().setVisible(true);
@@ -245,7 +246,7 @@ public class ShowCart extends javax.swing.JFrame {
         });
     }
 
-    public void showModels() throws RemoteException {
+    public final void showModels() throws RemoteException {
         modelsNcart = server.getModelsNcart(cartcount);
 
         for (int i = model.getRowCount() - 1; i >= 0; i--) {

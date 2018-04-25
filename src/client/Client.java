@@ -5,7 +5,6 @@
  */
 package client;
 
-import java.awt.event.WindowEvent;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -45,17 +44,13 @@ public class Client extends javax.swing.JFrame {
 
         ArrayList<String> categories;
         categories = server.getCategories();
-        categories.forEach((c) -> {
-            category_combobox.addItem(c);
-        });
+        categories.forEach(category_combobox::addItem);
 
         String category = (String) category_combobox.getSelectedItem();
         ArrayList<String> products;
         products = server.getProducts(category);
         product_combobox.removeAllItems();
-        products.forEach((p) -> {
-            product_combobox.addItem(p);
-        });
+        products.forEach(product_combobox::addItem);
 
         showModels();
         
@@ -99,7 +94,10 @@ public class Client extends javax.swing.JFrame {
         successlbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Welcome to RMIStore");
+        setMaximumSize(new java.awt.Dimension(600, 600));
         setMinimumSize(new java.awt.Dimension(600, 600));
+        setPreferredSize(new java.awt.Dimension(600, 600));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Category :");
@@ -153,12 +151,13 @@ public class Client extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(category_combobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(product_combobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(product_combobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(category_combobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -231,12 +230,10 @@ public class Client extends javax.swing.JFrame {
         try {
             String category = (String) category_combobox.getSelectedItem();
 
-            ArrayList<String> products = new ArrayList<>();
+            ArrayList<String> products;
             products = server.getProducts(category);
             product_combobox.removeAllItems();
-            for (String p : products) {
-                product_combobox.addItem(p);
-            }
+            products.forEach(product_combobox::addItem);
 
             showModels();
         } catch (RemoteException ex) {
@@ -363,6 +360,7 @@ public class Client extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
                     new Client().setVisible(true);
@@ -373,7 +371,7 @@ public class Client extends javax.swing.JFrame {
         });
     }
 
-    public void showModels() {
+    public final void showModels() {
         try {
             String category = (String) category_combobox.getSelectedItem();
             String product = (String) product_combobox.getSelectedItem();

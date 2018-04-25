@@ -104,22 +104,20 @@ public class RMIStore extends UnicastRemoteObject implements StoreInterface {
     @Override
     public ArrayList<String> getCategories() throws RemoteException {
         ArrayList<String> categories_names = new ArrayList<>();
-        for (Category c : categories) {
+        categories.forEach((c) -> {
             categories_names.add(c.getName());
-        }
+        });
         return categories_names;
     }
 
     @Override
     public ArrayList<String> getProducts(String category) throws RemoteException {
         ArrayList<String> products_names = new ArrayList<>();
-        for (Category c : categories) {
-            if (c.getName().equals(category)) {
-                for (Product p : c.getProducts()) {
-                    products_names.add(p.getName());
-                }
-            }
-        }
+        categories.stream().filter((c) -> (c.getName().equals(category))).forEachOrdered((c) -> {
+            c.getProducts().forEach((p) -> {
+                products_names.add(p.getName());
+            });
+        });
         return products_names;
     }
 
@@ -199,7 +197,7 @@ public class RMIStore extends UnicastRemoteObject implements StoreInterface {
 
     @Override
     public boolean removeFromCart(int cart_count, int model_id, int quantity) throws RemoteException {
-        boolean removed = false;
+        boolean removed;
         Cart cart;
         Model model = null;
 
@@ -304,11 +302,7 @@ public class RMIStore extends UnicastRemoteObject implements StoreInterface {
     @Override
     public boolean cartisEmpty(int cartcount) throws RemoteException {
         if (carts.containsKey(cartcount)) {
-            if (carts.get(cartcount).getModels_inCart().isEmpty()) {
-                return true;
-            } else {
-                return false;
-            }
+            return carts.get(cartcount).getModels_inCart().isEmpty();
         } else {
             return true;
         }

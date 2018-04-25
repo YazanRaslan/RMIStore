@@ -17,7 +17,7 @@ public class Bill {
     private final int id;
     private final int userID;
     private final Cart cart;
-    private float billValue;
+    private final float billValue;
     Map<Integer, Integer> models_inBill;
     
     public Bill(int userID, Cart c) {
